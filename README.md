@@ -1,7 +1,7 @@
 # URBS-GTFS
 
 Project made to parse the public URBS (Urbanização de Curitiba S/A) data
-and feed into the Mobility Dataset.
+and feed into the Mobility Database.
 
 Mobility Database is a worldwide open public transit data
 that provides public transport transit information feeds to
