@@ -1,0 +1,150 @@
+GTFS
+from the gtfs.org reference documentation
+
+
+leg = travel between a pair of subsequent locations along a trip
+journey = overall travel from origin to destination, including all legs
+sub-journey = subset of a journey, consisting of 2 or more legs
+fare-product = purchassable fare product to pay for or to validate a travel
+
+currency code = ISO 4217 alphabetical currency code. Brazil = BRL
+currency amount = decimal value indicating the currency amount. for BRL it is 2 decimal points.
+using float is discouraged to aoid gains or losses of money during calculations.
+
+date = service day using the format YYYYMMDD
+enum = option from a set of predefined constants defined in the "Description" column
+language code = IETF BCP 47 language code. Brazil is pt-BR
+latitude = WGS84 latitude in decimal degrees. Must be >= -90.0 and <= 90.0
+longitude = WGS84 longitude in decimal degrees. Must be >= -180.0 and <= 180.0
+
+Time  =
+Time in the HH:MM:SS format (H:MM:SS is also accepted). The time is measured from "noon minus 12h" of the service
+day (effectively midnight except for days on which daylight savings time changes occur). 
+For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 
+in HH:MM:SS.
+Example: 14:30:00 for 2:30PM or 25:35:00 for 1:35AM on the next day.
+
+local time = Time in HH:MM:SS format. Represents a wall-clock time shown in the local time of the 
+specified location.
+
+text = A string of UTF-8 characters, which must be human readable.
+timezone = TZ timezone. No special characters except underscore. Ex: America/Sao_Paulo
+
+
+----------------------------------------------------------------------------------------------------------------
+
+There are 32 different possible files for usage. 4 being required, 5 being conditionally required,
+2 being conditionally forbidden, and 21 optional.
+
+File Requirements:
+
+1. All files must be saved as comma-delimited text (CSV).
+
+2. The first line of each file must contain field names.
+
+3. All files and field names are case sensitive.
+
+4. Field values must not contain tabs, carriage returns or new lines.
+
+5. Field values that contain quotation marks or commas must be enclosed within quotation marks.
+Ex: "Contains ""quotes"", commas and text"
+For more information on the CSV file format: https://datatracker.ietf.org/doc/html/rfc4180
+
+6. Field values must not contain HTML tags, comments or escape sequences.
+
+7. Extra spaces between fields or field names should be removed.
+
+8. Each line must end with a CRLF or LF linebreak character.
+
+9. Files should be encoded in UTF-8.
+
+10. All dataset files must be zipped together. The files must reside at the root level directly, 
+not in a subfolder.
+
+11. Customer-facing text strings must use Mixed Case, instead of lowercase or UPPERCASE.
+
+12. The use of abbreviations should be avoided throughout the feed for names and other text (e.g. St. for Street)
+unless a location is called by its abbreviated name (e.g. “JFK Airport”). 
+Abbreviations may be problematic for accessibility by screen reader software and voice user interfaces. 
+Consuming software can be engineered to reliably convert full words to abbreviations for display, 
+but converting from abbreviations to full words is prone to more risk of error.
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
+Dataset Publishing and General Practices:
+
+1. Datasets should be at a public, permanent URL, including the zip file name.
+Ideally, the URL should be directly downloadable without requiring login.
+
+2. GTFS data should be published in iterations so that a single file
+at a stable location always contains teh latest official description
+of service for a transit agency.
+
+3. Datasets should maintain persistent identifiers (id fields) for 
+stop_id, route_id, and agency_id across data iterations whenever possible.
+
+4. One GTFS dataset should contain current and upcoming service 
+(sometimes called a "merged" dataset).
+
+5. Old services, expired calendars should be removed from the feed.
+
+6. If a service modification will go into effect in 7 days or fewer, 
+this service change should be expressed through a GTFS-realtime feed (service advisories or trip updates) 
+rather than static GTFS dataset.
+
+7. The web-server hosting GTFS data should be configured to correctly
+report the file modification date (see https://datatracker.ietf.org/doc/html/rfc2616#section-14.29).
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

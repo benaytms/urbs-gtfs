@@ -1,0 +1,8 @@
+# jupyter directory
+.ipynb_checkpoints/
+
+# env
+.env/
+
+# source data
+source/
