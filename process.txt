@@ -1,0 +1,5 @@
+weekly DAG -> fetches .xz files -> extracts it ->
+run pipeline -> validates -> (if changes are present) ->
+push new zip to hosting URL
+
+

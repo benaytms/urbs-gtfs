@@ -1,8 +1,22 @@
 # jupyter directory
 .ipynb_checkpoints/
+notebook/
+*.log
 
-# env
+# env/python
 .env
+venv/
+__pycache__/
+*.pyc
 
 # source data
 source/
+
+# output of transformed data
+output/
+
+# gtfs validator
+*.jar
+
+# any possible env
+*.env
