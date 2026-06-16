@@ -22,5 +22,8 @@ if __name__ == '__main__':
     validate()
     # check for any changes in the zip file, if there are changes, publish
     # new release.
-    if diff_check():
-        publish()
+    diff_check()
+
+    ## the publish function is only for me, for testing locally just diff_check is necessary
+    #if diff_check():
+    #    publish()
