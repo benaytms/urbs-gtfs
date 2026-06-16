@@ -26,7 +26,7 @@ This diagram aims to visually explain the full process behind the pipeline.
 
 - Python 3.13
 - Java (for the MobilityData Validator)
-- [gtfs-validator-8.0.1-cli.jar](https://github.com/MobilityData/gtfs-validator/releases/download/v8.0.1/gtfs-validator-8.0.1-cli.jar)
+- [gtfs-validator-8.0.1-cli.jar](https://github.com/MobilityData/gtfs-validator/releases/download/v8.0.1/gtfs-validator-8.0.1-cli.jar) (place at urbs-gtfs)
 - Requirements list at airflow/requirements.txt
 
 
