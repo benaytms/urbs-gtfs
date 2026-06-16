@@ -13,3 +13,8 @@ This project fills that gap by automatically transforming raw open data publishe
 
 ***
 
+## Diagram
+
+This diagram aims to visually explain the full process behind the pipeline.
+
+![Diagram](./images/full_pipeline_diagram.svg)
