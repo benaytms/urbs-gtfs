@@ -12,6 +12,7 @@ PROJECT_ROOT = os.getenv("GTFS_PROJECT_ROOT", "/opt/airflow/urbs-gtfs")
 SOURCE = os.path.join(PROJECT_ROOT, "source")
 OUTPUT = os.path.join(PROJECT_ROOT, "output")
 
+os.makedirs(OUTPUT, exist_ok=True)
 
 def transform(date: str) -> None:
     # date: YYYY_MM_DD
