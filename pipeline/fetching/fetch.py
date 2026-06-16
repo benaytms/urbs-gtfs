@@ -24,7 +24,6 @@ os.makedirs(SOURCE, exist_ok=True)
 os.makedirs(STATIC_DIR, exist_ok=True)
 
 
-
 def get_current_date() -> (str, str):
     CURRENT_DATE = datetime.now(TIMEZONE).strftime('%Y_%m_%d')
     YEAR = str(datetime.now(TIMEZONE).year)
