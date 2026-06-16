@@ -19,6 +19,27 @@ This diagram aims to visually explain the full process behind the pipeline.
 
 ![Diagram](./images/full_pipeline_diagram.svg)
 
+***
+
+## Design Choices
+
+There were a few specific choices that i made in this project, i'll explain them here.<br>
+
+Streamed downloads: URBS often releases very heavy files that could end up using
+too much memory, causing issues for people batch-fetching them, so to avoid
+issues like that i use streamed downloads in the fetch.py and transform.py step. 
+Making sure it reads file by chunks when fetching and also when converting
+the csv files.
+
+Diff checks: To avoid publishing unchanged same day files - the diff_check.py step
+creates a hash string of the zip file, and if the hash string hasn't changed, means the
+zip hasn't changed, so it skips the publish.py step entirely.
+
+Dated folder structure: Here in the remote repository, it's not possible to see
+the source directory which is the directory with all the source files, but this
+directory is separated by 'static' and "non-static" directories, the static one
+doesn't change at all through feeds, but the other ones do, and each different one has a different
+date to uniquely identify each week's feed data.
 
 ***
 
