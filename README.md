@@ -34,6 +34,9 @@ This diagram aims to visually explain the full process behind the pipeline.
 
 ## How to test
 
+It's worth noting that URBS daily data release time varies a lot,
+so if you get a 404 error it could be that.
+
 ```bash
 git clone https://github.com/benaytms/urbs-gtfs.git
 ```
