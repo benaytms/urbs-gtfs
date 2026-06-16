@@ -18,3 +18,36 @@ This project fills that gap by automatically transforming raw open data publishe
 This diagram aims to visually explain the full process behind the pipeline.
 
 ![Diagram](./images/full_pipeline_diagram.svg)
+
+
+***
+
+## Requirements
+
+- Python 3.13
+- Java (for the MobilityData Validator)
+- [gtfs-validator-8.0.1-cli.jar](https://github.com/MobilityData/gtfs-validator/releases/download/v8.0.1/gtfs-validator-8.0.1-cli.jar)
+- Requirements list at airflow/requirements.txt
+
+
+***
+
+## How to test
+
+```bash
+git clone https://github.com/benaytms/urbs-gtfs.git
+```
+
+```bash
+cd urbs-gtfs
+mv .env.example .env
+## change the variable to your urbs-gtfs path (not including the last '/')
+```
+
+```bash
+pip install -r airflow/requirements.txt
+```
+
+```bash
+python3 main.py
+```
