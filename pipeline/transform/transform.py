@@ -1,36 +1,40 @@
 import pandas as pd
 import numpy as np
+import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
 
 TIMEZONE = ZoneInfo("America/Sao_Paulo")
-SOURCE = "../../source/"
-OUTPUT = "../../output/"
+PROJECT_ROOT = os.getenv("GTFS_PROJECT_ROOT", "/opt/airflow/urbs-gtfs")
+SOURCE = os.path.join(PROJECT_ROOT, "source")
+OUTPUT = os.path.join(PROJECT_ROOT, "output")
 
 
 def transform(date: str) -> None:
     # date: YYYY_MM_DD
     YEAR = int(date[:4])
-    source_dir = f"{SOURCE}{date}/"
-    static_dir = f"{SOURCE}static/"
+    source_dir = os.path.join(SOURCE, date)
+    static_dir = os.path.join(SOURCE, "static")
 
     #loading sources
-    agency      = pd.read_csv(f"{static_dir}agency.csv")
-    linhas      = pd.read_csv(f"{source_dir}{date}_linhas.csv")
-    tabelaLinha = pd.read_csv(f"{source_dir}{date}_tabelaLinha.csv")
-    pontosLinha = pd.read_csv(f"{source_dir}{date}_pontosLinha.csv")
-    shapeLinha  = pd.read_csv(f"{source_dir}{date}_shapeLinha.csv")
+    agency      = pd.read_csv(os.path.join(static_dir, "agency.csv"))
+    linhas      = pd.read_csv(os.path.join(source_dir, f"{date}_linhas.csv"))
+    tabelaLinha = pd.read_csv(os.path.join(source_dir, f"{date}_tabelaLinha.csv"))
+    pontosLinha = pd.read_csv(os.path.join(source_dir, f"{date}_pontosLinha.csv"))
+    shapeLinha  = pd.read_csv(os.path.join(source_dir, f"{date}_shapeLinha.csv"))
 
     #feed_info.txt
-    #this file is required by gtfs, it's created in fetching/fetch.py
-    feed_info = pd.read_csv(f"{source_dir}feed_info.csv")
-    feed_info.to_csv(f"{OUTPUT}feed_info.txt", index=False)
+    feed_info = pd.read_csv(os.path.join(source_dir, "feed_info.csv"))
+    feed_info.to_csv(os.path.join(OUTPUT, "feed_info.txt"), index=False)
     print("feed_info.txt done.")
 
     #agency.txt
     urbs = agency[agency['agency_name'] == 'Urbanização de Curitiba S/A']
-    urbs_id = urbs['agency_id'].iloc[0].astype('int8') # more efficient
-    agency.to_csv(f"{OUTPUT}agency.txt", index=False)
+    urbs_id = urbs['agency_id'].iloc[0].astype('int8')
+    agency.to_csv(os.path.join(OUTPUT, "agency.txt"), index=False)
     print("agency.txt done.")
 
     #routes.txt
@@ -46,7 +50,7 @@ def transform(date: str) -> None:
     linhas = linhas[['route_id', 'agency_id', 'route_long_name', 'route_type']]
     routes = linhas.copy()
     routes['route_long_name'] = routes['route_long_name'].str.title()
-    routes.to_csv(f"{OUTPUT}routes.txt", index=False)
+    routes.to_csv(os.path.join(OUTPUT, "routes.txt"), index=False)
     print("routes.txt done.")
 
     #shapes.txt
@@ -56,13 +60,11 @@ def transform(date: str) -> None:
         'LON': 'shape_pt_lon',
         'COD': 'route_id'
     })
-    
     shapeLinha['shape_pt_lat'] = shapeLinha['shape_pt_lat'].astype(str).str.replace(',', '.').astype('float64')
     shapeLinha['shape_pt_lon'] = shapeLinha['shape_pt_lon'].astype(str).str.replace(',', '.').astype('float64')
-    
     shapeLinha['shape_pt_sequence'] = shapeLinha.groupby('shape_id').cumcount() + 1
     shapes = shapeLinha.drop('route_id', axis=1)
-    shapes.to_csv(f"{OUTPUT}shapes.txt", index=False)
+    shapes.to_csv(os.path.join(OUTPUT, "shapes.txt"), index=False)
     print("shapes.txt done.")
 
     #calendar.txt
@@ -78,15 +80,15 @@ def transform(date: str) -> None:
         'start_date': [f'{YEAR}0101'] * 3,
         'end_date':   [f'{YEAR}1231'] * 3,
     })
-    calendar.to_csv(f"{OUTPUT}calendar.txt", index=False)
+    calendar.to_csv(os.path.join(OUTPUT, "calendar.txt"), index=False)
     print("calendar.txt done.")
 
     #calendar_dates.txt
-    nacionais = pd.read_excel(f"{static_dir}feriados_nacionais.xls")
-    municipais = pd.read_csv(f"{static_dir}municipais_{YEAR}.csv",
+    nacionais = pd.read_excel(os.path.join(static_dir, "feriados_nacionais.xls"))
+    municipais = pd.read_csv(os.path.join(static_dir, f"municipais_{YEAR}.csv"),
                              names=['Data', 'tipo', 'escopo', 'tipo2', 'estado', 'ibge'])
 
-    nacionais = nacionais[0:nacionais.tail(9).index[0]] # the last 9 are not valid entries
+    nacionais = nacionais[0:nacionais.tail(9).index[0]]
     nacionais['Data'] = pd.to_datetime(nacionais['Data'], errors='coerce')
     nacionais_ano = nacionais[nacionais['Data'].dt.year == YEAR]['Data'].copy()
 
@@ -109,7 +111,7 @@ def transform(date: str) -> None:
         .sort_values(by='date', ascending=True)
         .reset_index(drop=True)
     )
-    calendar_dates.to_csv(f"{OUTPUT}calendar_dates.txt", index=False)
+    calendar_dates.to_csv(os.path.join(OUTPUT, "calendar_dates.txt"), index=False)
     print("calendar_dates.txt done.")
 
     #stops, trips, stop_times
@@ -207,9 +209,9 @@ def transform(date: str) -> None:
 
     stops = stops[stops['stop_id'].isin(stop_times['stop_id'].unique())]
 
-    trips[['route_id', 'service_id', 'trip_id']].to_csv(f"{OUTPUT}trips.txt", index=False)
-    stops.to_csv(f"{OUTPUT}stops.txt", index=False)
-    stop_times.to_csv(f"{OUTPUT}stop_times.txt", index=False)
+    trips[['route_id', 'service_id', 'trip_id']].to_csv(os.path.join(OUTPUT, "trips.txt"), index=False)
+    stops.to_csv(os.path.join(OUTPUT, "stops.txt"), index=False)
+    stop_times.to_csv(os.path.join(OUTPUT, "stop_times.txt"), index=False)
     print("trips.txt, stops.txt, stop_times.txt done.")
 
     print("\nTransform complete.")

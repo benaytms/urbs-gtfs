@@ -4,12 +4,17 @@ import zipfile
 import subprocess
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
 
 TIMEZONE = ZoneInfo("America/Sao_Paulo")
-OUTPUT = "../../output/"
-VALIDATOR_JAR = "../../gtfs-validator-8.0.1-cli.jar"
+PROJECT_ROOT = os.getenv("GTFS_PROJECT_ROOT", "/opt/airflow/urbs-gtfs")
+OUTPUT = os.path.join(PROJECT_ROOT, "output")
+SOURCE = os.path.join(PROJECT_ROOT, "source")
 GTFS_ZIP = os.path.join(OUTPUT, "gtfs_curitiba.zip")
 VALIDATION_DIR = os.path.join(OUTPUT, "validation")
+VALIDATOR_JAR = os.path.join(PROJECT_ROOT, "gtfs-validator-8.0.1-cli.jar")
 
 GTFS_FILES = [
     "agency.txt",

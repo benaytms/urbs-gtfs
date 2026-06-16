@@ -4,10 +4,11 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 
-load_dotenv("../../.env")
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
 
 TIMEZONE = ZoneInfo("America/Sao_Paulo")
-OUTPUT = "../../output/"
+PROJECT_ROOT = os.getenv("GTFS_PROJECT_ROOT", "/opt/airflow/urbs-gtfs")
+OUTPUT = os.path.join(PROJECT_ROOT, "output/")
 GTFS_ZIP = os.path.join(OUTPUT, "gtfs_curitiba.zip")
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")

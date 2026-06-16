@@ -21,3 +21,9 @@ output/
 
 # any possible env
 *.env
+
+# airflow
+airflow/logs/
+airflow/.env
+airflow/config/
+airflow/plugins/

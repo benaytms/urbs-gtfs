@@ -4,6 +4,9 @@ import pandas as pd
 import requests
 import lzma
 import os
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
 
 URL_URBS = r"https://dadosabertos.c3sl.ufpr.br/curitibaurbs/"
 URL_FERIADOS_CURITIBA = r"https://raw.githubusercontent.com/joaopbini/feriados-brasil/refs/heads/master/dados/feriados/municipal/csv/"
@@ -12,11 +15,14 @@ URL_FERIADOS_NACIONAIS = r"https://www.anbima.com.br/feriados/arqs/"
 TIMEZONE = ZoneInfo("America/Sao_Paulo")
 
 FILES_NAMES = ['linhas', 'pontosLinha', 'shapeLinha', 'tabelaLinha']
-SOURCE = "../../source/"
-STATIC_DIR = os.path.join(SOURCE, "static") + os.sep
+
+PROJECT_ROOT = os.getenv("GTFS_PROJECT_ROOT", "/opt/airflow/urbs-gtfs")
+SOURCE = os.path.join(PROJECT_ROOT, "source")
+STATIC_DIR = os.path.join(SOURCE, "static")
 
 os.makedirs(SOURCE, exist_ok=True)
 os.makedirs(STATIC_DIR, exist_ok=True)
+
 
 
 def get_current_date() -> (str, str):
@@ -29,13 +35,13 @@ def fetch_urbs_files(date) -> None:
     file_ext = ".json.xz"
     files_to_get = [(date[0] + '_' + f + file_ext) for f in FILES_NAMES]
 
-    destination_field = SOURCE + date[0] + os.sep
+    destination_field = os.path.join(SOURCE, date[0])
     os.makedirs(destination_field, exist_ok=True)
 
     for file in files_to_get:
-        current_compressed_file = destination_field + file
-        current_uncompressed_file = destination_field + file.replace(".xz", "")
-        current_converted_file = destination_field + file.replace(".json.xz", ".csv")
+        current_compressed_file = os.path.join(destination_field, file)
+        current_uncompressed_file = os.path.join(destination_field, file.replace(".xz", ""))
+        current_converted_file = os.path.join(destination_field, file.replace(".json.xz", ".csv"))
         current_file_url = URL_URBS + file
 
         if os.path.isfile(current_converted_file):
@@ -56,7 +62,6 @@ def fetch_urbs_files(date) -> None:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         wfile.write(chunk)
-            #print("    Done.")
 
         if not os.path.isfile(current_uncompressed_file):
             try:
@@ -85,7 +90,7 @@ def build_feed_info(date) -> None:
     start_date = now.strftime('%Y%m%d')
     end_date = (now + timedelta(weeks=1)).strftime('%Y%m%d')
 
-    destination_field = SOURCE + date[0] + os.sep
+    destination_field = os.path.join(SOURCE, date[0])
     os.makedirs(destination_field, exist_ok=True)
 
     feed_info = pd.DataFrame([{
@@ -163,11 +168,15 @@ def fetch_feriados_nacionais() -> None:
     else:
         print("feriados_nacionais.xls already in place, skipping...")
 
-
-if __name__ == '__main__':
+def fetch_all():
     today = get_current_date()
     fetch_urbs_files(today)
     build_feed_info(today)
-    build_agency()
     fetch_feriados_municipais(today)
     fetch_feriados_nacionais()
+    build_agency()
+    return datetime.now(TIMEZONE).strftime('%Y_%m_%d')
+
+
+if __name__ == '__main__':
+    fetch_all()
