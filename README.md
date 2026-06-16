@@ -75,3 +75,10 @@ pip install -r airflow/requirements.txt
 ```bash
 python3 main.py
 ```
+
+***
+
+## License
+
+The pipeline code is licensed under **Apache 2.0**.
+The GTFS data comes from open data published by C3SL/UFPR and is subject to their terms.
