@@ -45,7 +45,7 @@ date to uniquely identify each week's feed data.
 
 ## Requirements
 
-- Python 3.13 (with a virtual environment or with --break-packages flag)
+- Python 3.13 (with a virtual environment or with --break-system-packages flag)
 - Java (for the MobilityData Validator)
 - [gtfs-validator-8.0.1-cli.jar](https://github.com/MobilityData/gtfs-validator/releases/download/v8.0.1/gtfs-validator-8.0.1-cli.jar) (place at urbs-gtfs)
 - Requirements list at airflow/requirements.txt
