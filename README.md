@@ -13,7 +13,7 @@ This project fills that gap by automatically transforming raw open data publishe
 
 ***
 
-Mobility Database Feed ![link](https://mobilitydatabase.org/feeds/gtfs/mdb-3225)
+Mobility Database Feed [link](https://mobilitydatabase.org/feeds/gtfs/mdb-3225)
 
 ***
 
