@@ -46,7 +46,7 @@ with DAG(
     dag_id="urbs_gtfs_pipeline",
     description="Weekly GTFS static feed pipeline for Curitiba (URBS)",
     start_date=datetime(2026, 6, 15),
-    schedule="0 22 * * 1",  # every Monday at 22h
+    schedule="0 2 * * 2",  # runs every monday at 23h of UTC-3 time
     catchup=False,
     default_args=default_args,
 ) as dag:
