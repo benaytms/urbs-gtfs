@@ -6,7 +6,7 @@
 ![GTFS](https://img.shields.io/badge/GTFS-valid-brightgreen)
 
 Curitiba had no official GTFS feed, which means the city's public transit data is inaccessible to the open standard most applications use to navigate. 
-The General Transit Feed Specification (GTFS) is the open standard used by trip planning applications such as Google Maps, OsmAnd, and any open source developer to provide public transit directions.
+The General Transit Feed Specification (GTFS) is the open standard used by many trip planning applications such as Google Maps.
 Despite having one of the best urban transit systems in Brazil, Curitiba did not have an official GTFS feed. 
 
 This project fills that gap by automatically transforming raw open data published by C3SL/UFPR into a valid, weekly-updated GTFS feed available to anyone.
