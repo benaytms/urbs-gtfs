@@ -51,7 +51,7 @@ date to uniquely identify each week's feed data.
 
 - Python 3.13 (with a virtual environment or with --break-system-packages flag)
 - Java (for the MobilityData Validator)
-- [gtfs-validator-8.0.1-cli.jar](https://github.com/MobilityData/gtfs-validator/releases/download/v8.0.1/gtfs-validator-8.0.1-cli.jar) (place at urbs-gtfs)
+- An internet connection on the first validation run to download the pinned [MobilityData validator JAR](https://github.com/MobilityData/gtfs-validator/releases/tag/v8.0.1). The downloaded file is checked against its SHA-256 checksum and ignored by Git.
 - Requirements list at airflow/requirements.txt
 
 
@@ -67,7 +67,7 @@ git clone https://github.com/benaytms/urbs-gtfs.git
 
 ```bash
 cd urbs-gtfs
-mv .env.example .env
+cp .env.example .env
 ## change the variable to your urbs-gtfs path (not including the last '/')
 ```
 
@@ -78,6 +78,8 @@ pip install -r airflow/requirements.txt
 ```bash
 python3 main.py
 ```
+
+The first run downloads the validator JAR into the project root. Later runs reuse it after checking its checksum. This also applies when the pipeline runs in Airflow; its project mount must be writable.
 
 ***
 
